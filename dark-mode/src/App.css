@@ -49,3 +49,14 @@
   background: #d51939;
   border: 1px solid white;
 }
+
+
+/* DarkMode */
+.App.dark-mode {
+  background-color: black;
+}
+
+.App.dark-mode .info,
+.App.dark-mode .header {
+  color: white;
+}

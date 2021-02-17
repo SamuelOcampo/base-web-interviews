@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import Logo from './logo';
+import clsx from 'clsx';
 import './App.css';
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
   // TODO: Implement
-  const toggle = () => console.log('Implement me!');
+  const toggle = () => setDarkMode(!darkMode);
 
   return (
-    <div className="App">
+    <div className={clsx('App', darkMode && 'dark-mode')}>
       <div className="header">
         <Logo />
         <h1>A very magical Lorem Ipsum</h1>
