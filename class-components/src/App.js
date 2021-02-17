@@ -1,79 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, memo, useRef, useState } from 'react';
 import './App.css';
 
-class Repetitions extends React.Component {
-  constructor(props) {
-    super(props);
-    this.countRef = React.createRef();
-  }
+const Repetitions = memo((props) => {
+  const countRef = useRef();
+  const { times, count } = props;
 
-  componentWillUpdate(nextProps) {
-    if (!nextProps.value.times) {
-      this.countRef.current.style.color = 'red';
+  useEffect(() => {
+    if (!times) {
+      countRef.current.style.color = 'red';
     } else {
-      this.countRef.current.style.color = '';
+      countRef.current.style.color = '';
     }
-  }
+  },[times])
 
-  render() {
-    return (
-      <div className="repetitions">
-        <div ref={this.countRef}>Count: {this.props.value.count}</div>
-        {this.props.value.times === 0 && <div>Reset!</div>}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="repetitions">
+      <div ref={countRef}>Count: {count}</div>
+      {times === 0 && <div>Reset!</div>}
+    </div>
+  )
+})
 
-class App extends React.Component {
-  constructor() {
-    super();
+const initialState = {
+  times: 0,
+  count: 0
+};
+const App = function() {
+  const [state, setState] = useState(initialState);
 
-    this.state = {
-      interval: null,
-      value: {
-        count: 0,
-        times: 0,
-      },
-    };
-  }
-
-  componentDidMount() {
-    const interval = setInterval(() => this.updateData(), 1000);
-    this.setState({ interval });
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.state.interval);
-  }
-
-  updateData() {
-    if (this.state.value.times >= 5) {
-      this.setState({
-        value: {
-          count: this.state.value.count + 1,
-          times: 0
-        }
-      });
+  function updateData() {
+    const { times, count } = state;
+    let nextState = {};
+    if( times >= 5 ) {
+      nextState = {
+        count: count + 1,
+        times: 0
+      }
     } else {
-      this.setState({
-        value: {
-          ...this.state.value,
-          times: this.state.value.times + 1
-        }
-      });
+      nextState = {
+        count,
+        times: times + 1
+      }
     }
+    setState(nextState);
   }
 
-  render() {
-    console.log('t', this.state);
-    return (
-      <div className="App">
-        <Repetitions {...this.state} />
-      </div>
-    );
-  }
+  useEffect(() => {
+    const interval = setInterval(() => updateData(), 1000);
+    return () => clearTimeout(interval);
+  })
+
+  console.log('t', state);
+  return (
+    <div className="App">
+      <Repetitions {...state} />
+    </div>
+  );
 }
 
 export default App;
