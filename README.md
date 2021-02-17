@@ -24,3 +24,9 @@ This repository has questions, coding challenges and sample answers for the codi
   Should use Redux to handle state and changes
   Anything you don't manage to complete or feel could be improved, leave comments for it.
 ```
+## Challenge 3 TODOS
+
+1. Add row controls. One for edit and one for delete.
+2. On delete dispatcher will dispatch an event to remove that note
+3. On Edit dispatcher will fill dispatch an event for pre-fill the form and then another one for route chage.
+4. NoteForm needs a submit button and a handler that will trigger a dispatcher, this will create a new note if `id` is null else it will overwrite the existing
